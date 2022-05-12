@@ -4,27 +4,36 @@
 //-Box component 안에서 useEffect의 createBoxStyle변경인식
 //setStyle로 Box style변경 
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Box from './Box';
 
 function App(){
     const [size, setSizes] = useState(100);
+    const [isDark,setIsDark] = useState(false);
 
     //css를 담은 object를 반환
-    const createBoxStyle = () =>{
+    const createBoxStyle = useCallback(() =>{
         return{
             backgroundColor: 'pink',
             width: `${size}px`,
             height: `${size}px`,
         };
-    };
+    },[size]);
+    
+
+
     return(
-        <div>
+        <div
+        style={{
+            background: isDark ? 'black' : 'white',
+        }}
+        >
             <input
-            type = "text"
+            type = "number"
             value= {size}
             onChange = {(e)=> setSizes(e.target.value)}
             />
+            <button onClick={()=>setIsDark(!isDark)}>Change Theme</button>
             {/* createBoxStyle을 props로 받는다 */}
             <Box createBoxStyle={createBoxStyle}/>
         </div>
